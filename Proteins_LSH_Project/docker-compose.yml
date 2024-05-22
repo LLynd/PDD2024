@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  spark-master:
+    image: bitnami/spark:3.5.0
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=spark-master
+    ports:
+      - "8080:8080" # Spark Web UI
+      - "7077:7077" # Spark master
+    networks:
+      - spark-network
+    volumes:
+      - /mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/:/mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/
+
+  spark-worker-1:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker-1
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=4g
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
+    volumes:
+      - /mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/:/mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/
+
+  spark-worker-2:
+    image: bitnami/spark:3.5.0
+    container_name: spark-worker-2
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_CORES=4
+      - SPARK_WORKER_MEMORY=4g
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
+    volumes:
+      - /mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/:/mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/
+
+  jupyter:
+    build: .
+    container_name: jupyter
+    volumes:
+      - /mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/:/mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project/
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - SPARK_MASTER=spark://spark-master:7077
+      - PYSPARK_PYTHON=python3
+      - PYSPARK_DRIVER_PYTHON=jupyter
+      - PYSPARK_DRIVER_PYTHON_OPTS='notebook --ip=0.0.0.0 --no-browser --allow-root --notebook-dir=/home/jovyan/work'
+    depends_on:
+      - spark-master
+      - spark-worker-1
+      - spark-worker-2
+    networks:
+      - spark-network
+
+networks:
+  spark-network:
+    driver: bridge

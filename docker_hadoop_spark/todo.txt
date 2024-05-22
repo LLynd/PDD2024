@@ -1,0 +1,74 @@
+docker build -t spark1 .
+docker run -P --name spark1 -it spark1
+in container> start-dfs.sh
+in container> hdfs dfsadmin -report
+docker port spark1
+in browser> http://localhost:XYZ (look for hadoop)
+docker stop spark1
+docker container rm spark1
+
+#STANDALONE
+#start-master.sh
+#start-worker.sh <master-spark-URL>
+./cluster/spark-3.5.1-bin-hadoop3/sbin/start-all.sh
+docker port spark1
+#in browser> http://localhost:XYZ (tym razem szukamy sparka)
+#check host name in: hadoop@ce9ef54e74fb:~$
+#and insert into next line
+spark-shell --master spark://ce9ef54e74fb:7077
+#sc.textFile("file:///home/hadoop/cluster/spark-3.5.1-bin-hadoop3/README.md")
+#this will only seem to work but will give errors later
+#sc.textFile("hdfs:///home/hadoop/cluster/spark-3.5.1-bin-hadoop3/README.md")
+#val textFile = sc.textFile("file:///home/hadoop/cluster/spark-3.5.1-bin-hadoop3/README.md")
+#textFile.count()
+#textFile.first()
+#val linesWithSpark = textFile.filter(line => line.contains("Spark"))
+linesWithSpark.count()
+#textFile.filter(line => line.contains("Spark")).count()
+#textFile.map(line => line.split(" ").size).reduce((a, b) => if (a > b) a else b)
+#textFile.map(line => line.split(" ").size)
+#import java.lang.Math
+#textFile.map(line => line.split(" ").size).reduce((a, b) => Math.max(a, b))
+#textFile.map(line => line.split(" ").size).reduce(Math.max)
+#val wordCounts = textFile.flatMap(line => line.split(" ")).map(word => (word, 1)).reduceByKey((a, b) => a + b)
+#wordCounts.collect()
+#linesWithSpark.cache()
+#linesWithSpark.count()
+#linesWithSpark.count()
+run-example SparkPi
+./cluster/spark-3.3.2-bin-hadoop3.2/sbin/stop-all.sh
+
+#YARN
+#client mode
+./bin/spark-submit --class my.main.Class \
+    --master yarn \
+    --deploy-mode cluster \
+    --jars my-other-jar.jar,my-other-other-jar.jar \
+    my-main-jar.jar \
+    app_arg1 app_arg2
+    
+#cluster mode
+./bin/spark-submit --class org.apache.spark.examples.SparkPi \
+    --master yarn \
+    --deploy-mode cluster \
+    --driver-memory 4g \
+    --executor-memory 2g \
+    --executor-cores 1 \
+    --queue thequeue \
+    examples/jars/spark-examples*.jar \
+    10
+
+./cluster/spark-3.3.2-bin-hadoop3.2/sbin/stop-all.sh
+stop-dfs.sh
+
+#DOCKER COMMANDS
+docker images
+docker ps  # currently running
+docker ps -a  # wszystkie
+docker rm $(docker ps -a -q -f status=exited)  # starsze wersje
+docker container prune  # nowsze wersje
+docker rmi imageXYZ
+docker rmi $(docker images -q)
+docker run -P --name spark1 -it spark1  #można podać z --expose XYZ
+docker port spark1
+docker stop spark1

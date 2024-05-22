@@ -1,0 +1,19 @@
+# Dockerfile
+FROM jupyter/pyspark-notebook:latest
+
+# Install pip
+USER root
+RUN apt-get update && apt-get install wget
+RUN apt-get update && apt-get install -y python3-pip 
+
+# Set working directory
+WORKDIR /home/jovyan/work
+
+# Copy requirements.txt to the image
+COPY requirements.txt /tmp/requirements.txt
+
+# Install Python packages
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Start Jupyter Notebook
+CMD ["start-notebook.sh", "--NotebookApp.notebook_dir=/mnt/c/Users/lniedzwiedzki/Desktop/PDD2024/Proteins_LSH_Project", "--NotebookApp.token=''"]
