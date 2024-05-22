@@ -2,6 +2,7 @@
 **Protein clustering with LSH**
 
 # Introduction
+The aim of the project was to check if LSH clustering is sufficient for clustering protein expressions obtained from UniProt database.
 
 # Usage
 ## Requirements
@@ -17,7 +18,9 @@ Before you start the containers, edit the docker-compose.yml and dockerfile file
 To set up the containers, run the following commands:
 
 `docker pull bitnami/spark:3.5.0`
+
 `jupyter/pyspark-notebook:latest`
+
 `docker-compose up --build`
 
 Check your Docker Desktop app to see if the containers are running.
@@ -43,4 +46,8 @@ To run the notebook, enter the Jupyter server and run the lsh_analysis.ipynb fil
 Łukasz Niedźwiedzki (Student ID 419328)
 
 ## Course Information
-...
+Big data processing and cluster computing course at Faculty Of Mathematics, Informatics and Mechanics, University of Warsaw
+
+# To do:
+1. Fix preprocess.ipynb
+2. Better analysis
