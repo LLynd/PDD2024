@@ -1,20 +1,21 @@
 # PDD 2024 - Lab Project 1
-**Protein clustering with LSH**
+**Biased Reservoir Sampling on continous data stream**
 
 ## Introduction
-The aim of the project was to check if LSH clustering is sufficient for clustering protein expressions obtained from UniProt database. The provided dataset contained initial clusterings of proteins which were treated as ground truth during the analysis.
+The aim of the project...
 
-### Dataset
+### Data
 ...
 
 ### Conclusions
-The result analysis proved that LSH clustering is ... sufficient for this task. It achieved accuracy of ... with FN rate of ... and FP rate of ...
+...
 
 ## Usage
 ### Requirements
 
 1. Docker
 2. Python 3.10
+3. Apache Kafka
 
 Project was developed on Windows 11 with WSL2.
 
@@ -55,6 +56,4 @@ To run the notebook, enter the Jupyter server and run the lsh_analysis.ipynb fil
 Big data processing and cluster computing course at Faculty Of Mathematics, Informatics and Mechanics, University of Warsaw
 
 ## To do:
-1. Fix preprocess.ipynb
-2. Better analysis (https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_mutual_info_score.html)
-3. Add dataset description
+...
