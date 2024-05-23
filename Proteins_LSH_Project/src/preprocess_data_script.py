@@ -23,7 +23,7 @@ def preprocess_data_script(spark, PROJECT_PATH):
 
     protein_df = read_json_files(spark, os.path.join(os.getcwd(), "data", "fasta"))
     protein_df = protein_df.withColumnRenamed('value', 'protein')
-    #print(df_shape(protein_df))
+    print(df_shape(protein_df))
 
     data = join_dfs_on_name(df, protein_df)
     print(df_shape(data))
